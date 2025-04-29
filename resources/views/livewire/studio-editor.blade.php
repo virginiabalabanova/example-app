@@ -1,7 +1,7 @@
 @vite(['resources/js/studio.js'])
 
 <style>
-    #gjs {
+    #studio-editor {
         height: 100vh;
         width: 100%;
         overflow: hidden;
@@ -15,4 +15,4 @@
     }
 </style>
 
-<div id="gjs" class="w-full h-screen"></div>
+<div id="studio-editor" class="w-full h-screen"></div>

@@ -1,52 +1,72 @@
-import grapesjs from 'grapesjs';
-import 'grapesjs/dist/css/grapes.min.css';
+import createStudioEditor from '@grapesjs/studio-sdk';
+import { 
+  accordionComponent, 
+  flexComponent, 
+  rteTinyMce, 
+  canvasFullSize, 
+  layoutSidebarButtons, 
+  youtubeAssetProvider, 
+  iconifyComponent, 
+  swiperComponent, 
+  lightGalleryComponent, 
+  listPagesComponent, 
+  tableComponent 
+} from '@grapesjs/studio-sdk-plugins';
+import '@grapesjs/studio-sdk/style';
 
 // Debug message to confirm script execution
-console.log('GrapeJS Studio script loaded - simplified version');
+console.log('GrapeJS Studio SDK loaded');
+
+// Generate a random unique ID to use for testing
+const generateUniqueId = () => {
+  return 'id_' + Math.random().toString(36).substring(2, 15);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded, looking for GrapeJS container');
-  const gjsContainer = document.getElementById('gjs');
+  const studioEditor = document.getElementById('studio-editor');
   
-  if (!gjsContainer) {
-    console.error('GrapeJS container #gjs not found in the DOM');
+  if (!studioEditor) {
+    console.error('GrapeJS container #studio-editor not found in the DOM');
     return;
   }
   
   console.log('GrapeJS container found, initializing editor');
   
-  // Initialize GrapeJS with minimal configuration
-  try {
-    const editor = grapesjs.init({
-      // Main configuration
-      container: '#gjs',
-      height: '100%',
-      width: 'auto',
-      
-      // Panels
-      panels: { defaults: [] },
-      
-      // Storage manager configuration
-      storageManager: {
-        type: 'local',
-        autosave: true,
-        autoload: true,
-      },
-    });
+  // Initialize GrapeJS Studio SDK
+  createStudioEditor({
+    root: '#studio-editor',
+    licenseKey: '88d6bb88d8564817bec298587dc7b047875786903c284d8588531be105216c40',
+    project: {
+      type: 'web',
+      id: generateUniqueId() // Generate a unique ID for testing
+    },
+    identity: {
+      id: generateUniqueId() // Generate a unique ID for testing
+    },
+    assets: {
+      storageType: 'local' // Use local storage instead of cloud
+    },
+    storage: {
+      type: 'local', // Use local storage instead of cloud
+      autosave: true,
+      autosaveChanges: 100,
+      autosaveIntervalMs: 10000
+    },
+    plugins: [
+      accordionComponent.init({}),
+      flexComponent.init({}),
+      rteTinyMce.init({}),
+      canvasFullSize.init({}),
+      layoutSidebarButtons.init({}),
+      youtubeAssetProvider.init({}),
+      iconifyComponent.init({}),
+      swiperComponent.init({}),
+      lightGalleryComponent.init({}),
+      listPagesComponent.init({}),
+      tableComponent.init({})
+    ]
+  });
 
-    console.log('GrapeJS editor initialized successfully');
-
-    // Add simple demo content
-    editor.setComponents(`
-      <div style="padding: 20px; text-align: center;">
-        <h1 style="margin-bottom: 20px;">Welcome to GrapeJS</h1>
-        <p>This is a simple example of the GrapeJS editor.</p>
-        <button style="padding: 10px 20px; background-color: #0275d8; color: white; border: none; border-radius: 4px; cursor: pointer;">Click me!</button>
-      </div>
-    `);
-    
-    console.log('Demo content added to the editor');
-  } catch (error) {
-    console.error('Error initializing GrapeJS editor:', error);
-  }
+  console.log('GrapeJS Studio SDK editor initialized');
 });
